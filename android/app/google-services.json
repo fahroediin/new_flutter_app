@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1020156782114",
+    "project_id": "kasir-9fa4e",
+    "storage_bucket": "kasir-9fa4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020156782114:android:71f5262ade84a101f68c7b",
+        "android_client_info": {
+          "package_name": "com.example.new_flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZNiQt72OoHO4MCj0clCdaxIGmJ5-3Ohk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
