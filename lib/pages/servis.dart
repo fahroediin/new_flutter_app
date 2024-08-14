@@ -306,7 +306,8 @@ class _ServisPageState extends State<ServisPage> {
           filteredbarangList = barangList.where((barang) {
             String namaBarang = barang['namaBarang'].toString().toLowerCase();
             String searchKeyword = searchController.text.toLowerCase();
-            return namaBarang.contains(searchKeyword);
+            return (barang['kategori'] == 'Servis') &&
+                (namaBarang.contains(searchKeyword));
           }).toList();
         }
 

@@ -114,10 +114,11 @@ class _BarangPageState extends State<BarangPage> {
       stockColor = Colors.red;
       stockText = 'Stok: ${barang['stokBarang']}  !! Harap restock !!';
     }
+
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
-      height: 200,
+      height: 220, // Adjusted height to fit new content
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 241, 238, 147),
         borderRadius: BorderRadius.circular(10),
@@ -143,6 +144,14 @@ class _BarangPageState extends State<BarangPage> {
           SizedBox(height: 8),
           Text(
             'Nama: ${barang['namaBarang']}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Kategori: ${barang['kategori'] ?? 'Belum Ditentukan'}', // Display category
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w400,
@@ -179,7 +188,7 @@ class _BarangPageState extends State<BarangPage> {
                                   UpdateRecord(barangKey: barang['key'])))
                       .then((value) {
                     if (value != null && value == true) {
-                      fetchData(); // Memuat ulang data setelah berhasil update
+                      fetchData(); // Reload data after successful update
                     }
                   });
                 },

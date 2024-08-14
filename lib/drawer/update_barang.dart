@@ -16,6 +16,8 @@ class _UpdateRecordState extends State<UpdateRecord> {
   late TextEditingController namaBarangController;
   late TextEditingController hargaBarangController;
   late TextEditingController stokBarangController;
+  String? selectedKategori; // Menyimpan kategori yang dipilih
+  final List<String> kategoriList = ['Penjualan', 'Service']; // Daftar kategori
 
   void _showSnackBar(String message) {
     final snackBar = SnackBar(
@@ -30,23 +32,31 @@ class _UpdateRecordState extends State<UpdateRecord> {
   void initState() {
     super.initState();
     dbRef = FirebaseDatabase.instance.reference().child('daftarBarang');
-    getDaftarbarang();
+    getdaftarBarang();
 
     namaBarangController = TextEditingController();
     hargaBarangController = TextEditingController();
     stokBarangController = TextEditingController();
   }
 
-  void getDaftarbarang() async {
+  void getdaftarBarang() async {
     DataSnapshot snapshot = await dbRef.child(widget.barangKey).get();
-    Map<dynamic, dynamic> daftarbarang =
-        snapshot.value as Map<dynamic, dynamic>;
+    if (snapshot.exists) {
+      Map<dynamic, dynamic> daftarBarang =
+          snapshot.value as Map<dynamic, dynamic>;
 
-    setState(() {
-      namaBarangController.text = daftarbarang['namaBarang'];
-      hargaBarangController.text = daftarbarang['hargaBarang'].toString();
-      stokBarangController.text = daftarbarang['stokBarang'].toString();
-    });
+      setState(() {
+        namaBarangController.text = daftarBarang['namaBarang'];
+        hargaBarangController.text = daftarBarang['hargaBarang'].toString();
+        stokBarangController.text = daftarBarang['stokBarang'].toString();
+        selectedKategori = kategoriList.contains(daftarBarang['kategori'])
+            ? daftarBarang['kategori']
+            : kategoriList
+                .first; // Set default jika null atau tidak ada dalam list
+      });
+    } else {
+      _showSnackBar('Data tidak ditemukan');
+    }
   }
 
   @override
@@ -102,17 +112,39 @@ class _UpdateRecordState extends State<UpdateRecord> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                DropdownButtonFormField<String>(
+                  value: selectedKategori,
+                  items: kategoriList.map((String kategori) {
+                    return DropdownMenuItem<String>(
+                      value: kategori,
+                      child: Text(kategori),
+                    );
+                  }).toList(),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Kategori',
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedKategori = newValue;
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
                 MaterialButton(
                   onPressed: () {
                     if (namaBarangController.text.isEmpty ||
                         hargaBarangController.text.isEmpty ||
-                        stokBarangController.text.isEmpty) {
+                        stokBarangController.text.isEmpty ||
+                        selectedKategori == null) {
                       _showSnackBar('Mohon lengkapi semua field');
                     } else {
                       Map<String, dynamic> barang = {
                         'namaBarang': namaBarangController.text,
                         'hargaBarang': int.parse(hargaBarangController.text),
                         'stokBarang': int.parse(stokBarangController.text),
+                        'kategori':
+                            selectedKategori, // Menyimpan kategori yang dipilih
                       };
 
                       dbRef.child(widget.barangKey).update(barang).then((_) {

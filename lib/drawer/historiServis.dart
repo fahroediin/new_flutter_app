@@ -69,7 +69,9 @@ class _HistoriServisPageState extends State<HistoriServisPage> {
       }
     } else {
       // When not searching, get the last 50 items
-      Query query = dbRef.orderByKey().limitToLast(50);
+      Query query = dbRef
+          .orderByChild('dateTime')
+          .limitToLast(50); // Use your timestamp field
       DataSnapshot snapshot = await query.get();
 
       if (snapshot.exists) {
@@ -571,7 +573,8 @@ class _HistoriServisPageState extends State<HistoriServisPage> {
           Expanded(
             child: hasData
                 ? FirebaseAnimatedList(
-                    query: dbRef,
+                    query: dbRef.orderByChild('dateTime').limitToLast(
+                        50), // Ensure the query is updated here as well
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       return buildListItem(snapshot);

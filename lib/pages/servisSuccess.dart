@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:new_flutter_app/pages/home_page.dart';
 import 'package:new_flutter_app/pages/receiptService.dart';
 import 'package:new_flutter_app/pages/servis.dart';
 
@@ -340,7 +341,7 @@ class _ServisSuccessPageState extends State<ServisSuccessPage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ServisPage(),
+                      builder: (context) => const HomePage(),
                     ),
                   );
                 },
@@ -355,7 +356,7 @@ class _ServisSuccessPageState extends State<ServisSuccessPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Transaksi Baru',
+                      'Home',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

@@ -10,8 +10,7 @@ class InputbarangPage extends StatefulWidget {
   _InputbarangPageState createState() => _InputbarangPageState();
 }
 
-class _InputbarangPageState extends State<InputbarangPage>
-    with TickerProviderStateMixin {
+class _InputbarangPageState extends State<InputbarangPage> {
   final TextEditingController _idBarangController = TextEditingController();
   final TextEditingController _namaBarangController = TextEditingController();
   final TextEditingController _hargaBarangController = TextEditingController();
@@ -20,6 +19,8 @@ class _InputbarangPageState extends State<InputbarangPage>
   final databaseReference = FirebaseDatabase.instance.reference();
   List<Map<dynamic, dynamic>> barangList = [];
   List<Map<dynamic, dynamic>> filteredbarangList = [];
+
+  String selectedCategory = 'Servis'; // Default selection
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _InputbarangPageState extends State<InputbarangPage>
         'namaBarang': namaBarang,
         'hargaBarang': hargaBarang,
         'stokBarang': stokBarang,
+        'kategori': selectedCategory, // Save selected category
       }).then((_) {
         final snackBar = SnackBar(
           content: Text('Berhasil menyimpan data'),
@@ -77,7 +79,7 @@ class _InputbarangPageState extends State<InputbarangPage>
         );
       }).catchError((error) {
         final snackBar = SnackBar(
-          content: Text('Gagal menyimpan data suku cadang: $error'),
+          content: Text('Gagal menyimpan data barang: $error'),
           duration: Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,
         );
@@ -177,6 +179,25 @@ class _InputbarangPageState extends State<InputbarangPage>
                 border: OutlineInputBorder(),
                 labelText: 'Stok barang',
               ),
+            ),
+            SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              value: selectedCategory,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Kategori barang',
+              ),
+              items: <String>['Servis', 'Penjualan'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedCategory = newValue!;
+                });
+              },
             ),
             SizedBox(height: 20),
             ElevatedButton(

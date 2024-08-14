@@ -307,8 +307,10 @@ class _TransaksiPenjualanPageState extends State<TransaksiPenjualanPage> {
             String namaBarang = barang['namaBarang'].toString().toLowerCase();
             String specbarang = barang['specbarang'].toString().toLowerCase();
             String searchKeyword = searchController.text.toLowerCase();
-            return namaBarang.contains(searchKeyword) ||
-                specbarang.contains(searchKeyword);
+            // Filter berdasarkan kategori "Penjualan" dan pencarian
+            return (barang['kategori'] == 'Penjualan') &&
+                (namaBarang.contains(searchKeyword) ||
+                    specbarang.contains(searchKeyword));
           }).toList();
         }
 
@@ -373,9 +375,7 @@ class _TransaksiPenjualanPageState extends State<TransaksiPenjualanPage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5), // Jarak antara teks dan teks yang ditambahkan
+                                  SizedBox(height: 5),
                                   Text(
                                     'Pastikan ejaan dengan benar',
                                     style: TextStyle(
